@@ -22,6 +22,12 @@ public class Main {
         return jsonString.toString();
     }
 
+    public static double euclidean_distance(int[] loc1, int[] loc2){
+        double vert = loc1[0]- loc2[0];
+        double hor = loc1[1] - loc2[1];
+        return Math.sqrt(vert* vert + hor * hor);
+    }
+
     public static void main(String[] args) {
         JSONParser input = new JSONParser(readJsonFileToString("input.json"));
         List<School> schools = new ArrayList<>();
@@ -42,7 +48,11 @@ public class Main {
             schools.add(tempschool);
         }
 
+        for(Student student : students){
+            for(School school : schools){
 
+            }
+        }
        
     }
 
