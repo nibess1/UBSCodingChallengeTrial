@@ -28,6 +28,12 @@ public class Main {
         return Math.sqrt(vert* vert + hor * hor);
     }
 
+    // public static double calculate_weightage(Student student, School school){
+    //     int alumni = 0;
+    //     int volunteer = 0;
+    //     if(student.getVol)
+    // }
+
     public static void main(String[] args) {
         JSONParser input = new JSONParser(readJsonFileToString("input.json"));
         List<School> schools = new ArrayList<>();
@@ -108,6 +114,24 @@ class Student {
         volunteer = (String) input.getOrDefault("volunteer", null);
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public int[] getHomeLocation() {
+        return homeLocation;
+    }
+
+    public String getAlumni() {
+        return alumni;
+    }
+
+    public String getVolunteer() {
+        return volunteer;
+    }
+
+    
+
 }
 
 class School {
@@ -129,6 +153,19 @@ class School {
         }
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public int[] getLocation() {
+        return location;
+    }
+
+    public int getMaxAllocation() {
+        return maxAllocation;
+    }
+
+    
 }
 
 // parsing JSON
