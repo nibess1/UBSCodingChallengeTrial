@@ -1,3 +1,4 @@
+
 /**
  * 
  * 
@@ -5,7 +6,6 @@
 
 import java.util.*;
 import java.io.*;
-
 
 public class Main {
 
@@ -21,17 +21,29 @@ public class Main {
         }
         return jsonString.toString();
     }
-    
+
     public static void main(String[] args) {
         JSONParser input = new JSONParser(readJsonFileToString("input.json"));
         List<School> schools = new ArrayList<>();
         List<Student> students = new ArrayList<>();
         
         JSONObject test = input.parseObject();
-        System.out.println(test.get("students"));
+        System.out.println(test.get("students").getClass());
+        JSONArray studs = (JSONArray) test.get("students");
+        //System.out.println(studs.get(0).getClass());
+        for(int i = 0; i < studs.size(); i++){
+             
+            Student tempStudent = new Student((JSONObject) studs.get(i));
+            students.add(tempStudent);
+        }
+        for(int i = 0; i < studs.size(); i++){
+             
+            School tempschool = new School((JSONObject) studs.get(i));
+            schools.add(tempschool);
+        }
+       
     }
 
-    
 }
 
 class Student {
@@ -47,18 +59,15 @@ class Student {
         this.volunteer = volunteer;
     }
 
-    public Student(Map<String, Object> input){
+    public Student(JSONObject input) {
         id = (int) input.get("id");
-        if(input.get("homeLocation") instanceof int[] k){
+        if (input.get("homeLocation") instanceof int[] k) {
             homeLocation = k;
         }
         alumni = (String) input.getOrDefault("alumni", null);
         volunteer = (String) input.getOrDefault("volunteer", null);
-
-        
     }
-  
-    
+
 }
 
 class School {
@@ -72,17 +81,17 @@ class School {
         this.maxAllocation = maxAllocation;
     }
 
-    public School(Map<String, Object> input){
+    public School(JSONObject input) {
         name = (String) input.get("name");
         maxAllocation = (int) input.get("maxAllocation");
-        if(input.get("location") instanceof int[] k){
+        if (input.get("location") instanceof int[] k) {
             location = k;
         }
     }
 
 }
 
-//parsing JSON
+// parsing JSON
 
 class JSONObject {
     private Map<String, Object> map = new HashMap<>();
@@ -93,6 +102,10 @@ class JSONObject {
 
     public Object get(String key) {
         return map.get(key);
+    }
+
+    public Object getOrDefault(String key, Object def){
+        return map.getOrDefault(key, def);
     }
 
     @Override
@@ -110,6 +123,10 @@ class JSONArray {
 
     public Object get(int index) {
         return list.get(index);
+    }
+
+    public int size() {
+        return list.size();
     }
 
     @Override
@@ -134,7 +151,7 @@ class JSONParser {
             while (index < json.length() && json.charAt(index) != '}') {
                 String key = parseString();
                 index++; // skip ':'
-                if(json.charAt(index) == ' '){
+                if (json.charAt(index) == ' ') {
                     index++;
                 }
                 Object value = parseValue();
@@ -186,12 +203,12 @@ class JSONParser {
         } else if (json.startsWith("null", index)) {
             index += 4;
             return null;
-        } else if (json.charAt(index) == ' '){
+        } else if (json.charAt(index) == ' ') {
             index++;
             return null;
         } else {
             throw new IllegalStateException("Unexpected value: " + json.charAt(index) + ", at index " + index);
-            
+
         }
     }
 
