@@ -1,6 +1,6 @@
 
 /**
- * 
+ * Assumption 1 : Maximum euclidean distance is less than 100.
  * 
  */
 
@@ -41,8 +41,38 @@ public class Main {
             School tempschool = new School((JSONObject) studs.get(i));
             schools.add(tempschool);
         }
+
+
        
     }
+
+}
+
+class Assignment {
+    Student student;
+    School school;
+    double weight;
+    
+    public Assignment(Student student, School school, double weight) {
+        this.student = student;
+        this.school = school;
+        this.weight = weight;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public School getSchool() {
+        return school;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    
+
 
 }
 
