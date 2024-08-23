@@ -28,6 +28,11 @@ public class Main {
         return Math.sqrt(vert* vert + hor * hor);
     }
 
+    public static double distance_score(int[] loc1, int[] loc2){
+        double dist = euclidean_distance(loc1, loc2);
+        return 50 - 0.5 * dist;
+
+    }
     public static double calculate_weightage(Student student, School school){
         double weight = 0;
         String schoolname = school.getName();
@@ -37,8 +42,6 @@ public class Main {
         if(schoolname.equals(student.getAlumni())){
             weight += 30;
         }
-
-
         return weight;
     }
 
@@ -61,10 +64,10 @@ public class Main {
             School tempschool = new School((JSONObject) studs.get(i));
             schools.add(tempschool);
         }
-
+        List<Assignment> studentAssignment = new ArrayList<>();
         for(Student student : students){
             for(School school : schools){
-
+                studentAssignment.add(new Assignment(student, school, calculate_weightage(student, school)));
             }
         }
        
