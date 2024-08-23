@@ -28,11 +28,19 @@ public class Main {
         return Math.sqrt(vert* vert + hor * hor);
     }
 
-    // public static double calculate_weightage(Student student, School school){
-    //     int alumni = 0;
-    //     int volunteer = 0;
-    //     if(student.getVol)
-    // }
+    public static double calculate_weightage(Student student, School school){
+        double weight = 0;
+        String schoolname = school.getName();
+        if(schoolname.equals(student.getVolunteer())){
+            weight += 20;
+        }
+        if(schoolname.equals(student.getAlumni())){
+            weight += 30;
+        }
+
+
+        return weight;
+    }
 
     public static void main(String[] args) {
         JSONParser input = new JSONParser(readJsonFileToString("input.json"));
