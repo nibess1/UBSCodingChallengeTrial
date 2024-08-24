@@ -70,6 +70,21 @@ public class Main {
                 studentAssignment.add(new Assignment(student, school, calculate_weightage(student, school)));
             }
         }
+
+        studentAssignment.sort(Comparator.comparing(Assignment::getWeight).thenComparing(Assignment::getStudentId));
+
+        Set<Integer> addedStudents = new HashSet<>();
+
+        for (Assignment a : studentAssignment){
+            School s = a.getSchool();
+            Integer sId = a.getStudentId();
+            if(!addedStudents.contains(sId)){
+                if(s.allocateStudent(sId)){
+                    addedStudents.add(sId);
+                }
+            }
+        }
+
        
     }
 
@@ -90,6 +105,10 @@ class Assignment {
         return student;
     }
 
+    public int getStudentId() {
+        return student.getId();
+    }
+
     public School getSchool() {
         return school;
     }
@@ -97,7 +116,7 @@ class Assignment {
     public double getWeight() {
         return weight;
     }
-
+ 
     
 
 
@@ -149,6 +168,8 @@ class School {
     String name;
     int[] location;
     int maxAllocation;
+    int currentAllocation = 0;
+    List<Integer> studentAllocations = new ArrayList<>();
 
     public School(String name, int[] location, int maxAllocation) {
         this.name = name;
@@ -175,6 +196,26 @@ class School {
     public int getMaxAllocation() {
         return maxAllocation;
     }
+
+    public int getCurrentAllocation() {
+        return currentAllocation;
+    }
+
+    public List<Integer> getStudentAllocations() {
+        return studentAllocations;
+    }
+
+    public boolean allocateStudent(int studentId){
+        if(currentAllocation == maxAllocation){
+            return false;
+        }
+
+        studentAllocations.add(studentId);
+        currentAllocation++;
+        return true;
+    }
+
+    
 
     
 }
