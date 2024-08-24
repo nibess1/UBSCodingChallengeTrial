@@ -33,7 +33,12 @@ public class Main {
             e.printStackTrace();
         }
     }
-
+    
+    public static double manhattan_distance(int[] loc1, int[] loc2){
+        double vert = loc1[0]- loc2[0];
+        double hor = loc1[1] - loc2[1];
+        return vert + hor;
+    }
     public static double euclidean_distance(int[] loc1, int[] loc2){
         double vert = loc1[0]- loc2[0];
         double hor = loc1[1] - loc2[1];
@@ -41,8 +46,10 @@ public class Main {
     }
 
     public static double distance_score(int[] loc1, int[] loc2){
-        double dist = euclidean_distance(loc1, loc2);
-        return 50 - 50.0 / MAX_DIST * dist;
+        double dist = manhattan_distance(loc1, loc2);
+
+        //return 50.0 /(1 + dist);
+        return 50 - (50.0 / MAX_DIST * dist);
 
     }
     public static double calculate_weightage(Student student, School school){
@@ -59,6 +66,8 @@ public class Main {
     }
 
     public static void main(String[] args) {
+
+        long startTime = System.currentTimeMillis();
 
         if (args.length != 1) {
             System.out.println("Usage: java Main <filename>");
@@ -85,6 +94,11 @@ public class Main {
             School tempschool = new School((JSONObject) schs.get(i));
             schools.add(tempschool);
         }
+
+        long parseTime = System.currentTimeMillis();
+        System.out.println("time to parse = " + (parseTime - startTime));
+
+
         List<Assignment> studentAssignment = new ArrayList<>();
         for(Student student : students){
             for(School school : schools){
@@ -92,12 +106,18 @@ public class Main {
             }
         }
 
+        long mathTime = System.currentTimeMillis();
+        System.out.println("time to calculate = " + (mathTime - parseTime));
+
         studentAssignment.sort(Comparator.comparing(Assignment::getWeight).reversed().thenComparing(Assignment::getStudentId));
 
+        long sortTime = System.currentTimeMillis();
+        System.out.println("time to sort = " + (sortTime - mathTime));
+
         Set<Integer> addedStudents = new HashSet<>();
-        // for(Assignment a: studentAssignment){
-        //    System.out.println(a.getStudentId() + " going to " + a.getSchool().getName() + " with score of " + a.getWeight());
-        // }
+        //for(Assignment a: studentAssignment){
+        //   System.out.println("Student "+ a.getStudentId() + " going to " + a.getSchool().getName() + " with score of " + a.getWeight());
+        //}
 
         for (Assignment a : studentAssignment){
             School s = a.getSchool();
@@ -118,7 +138,10 @@ public class Main {
             Integer[] studentId = s.getStudentAllocations().toArray(new Integer[s.getCurrentAllocation()]);
             result.put(s.getName(), studentId);
         }
+        
+        long allocateTime = System.currentTimeMillis();
 
+        System.out.println("time to allocate = " + (allocateTime - sortTime));
 
         StringBuilder fileContent = new StringBuilder("[");
         
