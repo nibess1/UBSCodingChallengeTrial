@@ -59,7 +59,15 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        JSONParser input = new JSONParser(readJsonFileToString("input.json"));
+
+        if (args.length != 1) {
+            System.out.println("Usage: java Main <filename>");
+            System.exit(1);
+        }
+
+        // Get the file name from the first argument
+        String fileName = args[0];
+        JSONParser input = new JSONParser(readJsonFileToString(fileName));
         List<School> schools = new ArrayList<>();
         List<Student> students = new ArrayList<>();
         
