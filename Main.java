@@ -7,7 +7,10 @@
 import java.util.*;
 import java.io.*;
 
+
 public class Main {
+
+    public final static int MAX_DIST = 100;
 
     public static String readJsonFileToString(String filePath) {
         StringBuilder jsonString = new StringBuilder();
@@ -39,7 +42,7 @@ public class Main {
 
     public static double distance_score(int[] loc1, int[] loc2){
         double dist = euclidean_distance(loc1, loc2);
-        return 50 - 0.5 * dist;
+        return 50 - 50.0 / MAX_DIST * dist;
 
     }
     public static double calculate_weightage(Student student, School school){

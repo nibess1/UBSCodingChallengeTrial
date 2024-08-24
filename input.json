@@ -1,22 +1,93 @@
 {
     "schools": [
       {
-        "name": "School M",
-        "location": [2, 2],
-        "maxAllocation": 1
+        "name": "School Alpha",
+        "location": [1, 1],
+        "maxAllocation": 3
       },
       {
-        "name": "School N",
+        "name": "School Beta",
         "location": [4, 4],
+        "maxAllocation": 2
+      },
+      {
+        "name": "School Gamma",
+        "location": [7, 7],
+        "maxAllocation": 2
+      },
+      {
+        "name": "School Delta",
+        "location": [10, 10],
         "maxAllocation": 1
       }
     ],
     "students": [
       {
+        "id": 1,
+        "homeLocation": [1, 2],
+        "alumni": "School Alpha",
+        "volunteer": "School Beta"
+      },
+      {
+        "id": 2,
+        "homeLocation": [2, 2],
+        "alumni": "School Beta",
+        "volunteer": "School Gamma"
+      },
+      {
+        "id": 3,
+        "homeLocation": [5, 5],
+        "alumni": "School Gamma",
+        "volunteer": "School Delta"
+      },
+      {
+        "id": 4,
+        "homeLocation": [8, 8],
+        "alumni": "School Alpha"
+      },
+      {
+        "id": 5,
+        "homeLocation": [6, 6],
+        "alumni": "School Beta",
+        "volunteer": "School Gamma"
+      },
+      {
+        "id": 6,
+        "homeLocation": [9, 9],
+        "alumni": "School Gamma"
+      },
+      {
+        "id": 7,
+        "homeLocation": [3, 4],
+        "alumni": "School Delta",
+        "volunteer": "School Alpha"
+      },
+      {
+        "id": 8,
+        "homeLocation": [0, 0],
+        "alumni": "School Alpha"
+      },
+      {
+        "id": 9,
+        "homeLocation": [4, 5],
+        "alumni": "School Beta",
+        "volunteer": "School Gamma"
+      },
+      {
         "id": 10,
-        "homeLocation": [1, 1],
-        "alumni": "School M",
-        "volunteer": "School N"
+        "homeLocation": [2, 3],
+        "alumni": "School Delta"
+      },
+      {
+        "id": 11,
+        "homeLocation": [3, 5],
+        "alumni": "School Gamma",
+        "volunteer": "School Alpha"
+      },
+      {
+        "id": 12,
+        "homeLocation": [7, 9],
+        "alumni": "School Beta"
       }
     ]
   }

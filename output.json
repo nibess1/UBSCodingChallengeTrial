@@ -1,8 +1,14 @@
 [
 	{
-	"School M": [10]
+	"School Alpha": [1, 8, 4]
 	},
 	{
-	"School N": []
+	"School Beta": [9, 2]
+	},
+	{
+	"School Delta": [7]
+	},
+	{
+	"School Gamma": [3, 6]
 	}
 ]
