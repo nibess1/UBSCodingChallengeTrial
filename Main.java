@@ -42,6 +42,7 @@ public class Main {
         if(schoolname.equals(student.getAlumni())){
             weight += 30;
         }
+        weight += distance_score(student.getHomeLocation(), school.getLocation());
         return weight;
     }
 
@@ -51,17 +52,17 @@ public class Main {
         List<Student> students = new ArrayList<>();
         
         JSONObject test = input.parseObject();
-        System.out.println(test.get("students").getClass());
         JSONArray studs = (JSONArray) test.get("students");
-        //System.out.println(studs.get(0).getClass());
+        JSONArray schs = (JSONArray) test.get("schools");
+
         for(int i = 0; i < studs.size(); i++){
              
             Student tempStudent = new Student((JSONObject) studs.get(i));
             students.add(tempStudent);
         }
-        for(int i = 0; i < studs.size(); i++){
+        for(int i = 0; i < schs.size(); i++){
              
-            School tempschool = new School((JSONObject) studs.get(i));
+            School tempschool = new School((JSONObject) schs.get(i));
             schools.add(tempschool);
         }
         List<Assignment> studentAssignment = new ArrayList<>();
@@ -71,9 +72,12 @@ public class Main {
             }
         }
 
-        studentAssignment.sort(Comparator.comparing(Assignment::getWeight).thenComparing(Assignment::getStudentId));
+        studentAssignment.sort(Comparator.comparing(Assignment::getWeight).reversed().thenComparing(Assignment::getStudentId));
 
         Set<Integer> addedStudents = new HashSet<>();
+        for(Assignment a: studentAssignment){
+            System.out.println(a.getStudentId() + " going to " + a.getSchool().getName() + " with score of " + a.getWeight());
+        }
 
         for (Assignment a : studentAssignment){
             School s = a.getSchool();
@@ -85,8 +89,22 @@ public class Main {
             }
         }
 
-       
+        Map<String, Integer[]> result = new HashMap<>();
+
+        for(School s : schools){
+            Integer[] studentId = s.getStudentAllocations().toArray(new Integer[s.getCurrentAllocation()]);
+            result.put(s.getName(), studentId);
+        }
+
+        for (Map.Entry<String, Integer[]> entry : result.entrySet()) {
+            String schoolName = entry.getKey();
+            Integer[] grades = entry.getValue();
+
+            System.out.println(schoolName + " = " + Arrays.toString(grades));
+        }
+    
     }
+
 
 }
 
@@ -124,7 +142,7 @@ class Assignment {
 
 class Student {
     int id;
-    int[] homeLocation;
+    int[] homeLocation = new int[2];
     String alumni;
     String volunteer;
 
@@ -137,9 +155,10 @@ class Student {
 
     public Student(JSONObject input) {
         id = (int) input.get("id");
-        if (input.get("homeLocation") instanceof int[] k) {
-            homeLocation = k;
-        }
+        JSONArray loc = (JSONArray) input.get("homeLocation");
+        homeLocation[0] = (int) loc.get(0);
+        homeLocation[1] = (int) loc.get(1);
+
         alumni = (String) input.getOrDefault("alumni", null);
         volunteer = (String) input.getOrDefault("volunteer", null);
     }
@@ -166,7 +185,7 @@ class Student {
 
 class School {
     String name;
-    int[] location;
+    int[] location = new int[2];
     int maxAllocation;
     int currentAllocation = 0;
     List<Integer> studentAllocations = new ArrayList<>();
@@ -179,10 +198,11 @@ class School {
 
     public School(JSONObject input) {
         name = (String) input.get("name");
+        JSONArray loc = (JSONArray) input.get("location");
+        location[0] = (int) loc.get(0);
+        location[1] = (int) loc.get(1);
         maxAllocation = (int) input.get("maxAllocation");
-        if (input.get("location") instanceof int[] k) {
-            location = k;
-        }
+        
     }
 
     public String getName() {
@@ -257,6 +277,7 @@ class JSONArray {
     public int size() {
         return list.size();
     }
+    
 
     @Override
     public String toString() {
