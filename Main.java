@@ -85,7 +85,7 @@ public class Main {
 
         Set<Integer> addedStudents = new HashSet<>();
         // for(Assignment a: studentAssignment){
-        //     System.out.println(a.getStudentId() + " going to " + a.getSchool().getName() + " with score of " + a.getWeight());
+        //    System.out.println(a.getStudentId() + " going to " + a.getSchool().getName() + " with score of " + a.getWeight());
         // }
 
         for (Assignment a : studentAssignment){
@@ -122,9 +122,16 @@ public class Main {
         }
 
         //remove last ,
-        fileContent.deleteCharAt(fileContent.length() - 1);
+        if(fileContent.charAt(fileContent.length() - 1) == ','){
+            fileContent.deleteCharAt(fileContent.length() - 1);
+        }
+
+        if(result.size() == 0){
+            fileContent.append("]");
+        } else {
+            fileContent.append(System.lineSeparator()).append("]");
+        }
         
-        fileContent.append(System.lineSeparator()).append("]");
 
         writeFile("output.json", fileContent.toString());
     
