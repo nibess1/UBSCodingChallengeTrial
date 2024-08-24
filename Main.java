@@ -101,6 +101,9 @@ public class Main {
         Map<String, Integer[]> result = new TreeMap<>();
 
         for(School s : schools){
+            if(s.getCurrentAllocation() == 0){
+                continue;
+            }
             Integer[] studentId = s.getStudentAllocations().toArray(new Integer[s.getCurrentAllocation()]);
             result.put(s.getName(), studentId);
         }
