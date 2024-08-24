@@ -22,6 +22,15 @@ public class Main {
         return jsonString.toString();
     }
 
+    public static void writeFile(String filePath, String content){
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            writer.write(content);
+            System.out.println("Successfully written to the file: " + filePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static double euclidean_distance(int[] loc1, int[] loc2){
         double vert = loc1[0]- loc2[0];
         double hor = loc1[1] - loc2[1];
@@ -75,9 +84,9 @@ public class Main {
         studentAssignment.sort(Comparator.comparing(Assignment::getWeight).reversed().thenComparing(Assignment::getStudentId));
 
         Set<Integer> addedStudents = new HashSet<>();
-        for(Assignment a: studentAssignment){
-            System.out.println(a.getStudentId() + " going to " + a.getSchool().getName() + " with score of " + a.getWeight());
-        }
+        // for(Assignment a: studentAssignment){
+        //     System.out.println(a.getStudentId() + " going to " + a.getSchool().getName() + " with score of " + a.getWeight());
+        // }
 
         for (Assignment a : studentAssignment){
             School s = a.getSchool();
@@ -89,20 +98,34 @@ public class Main {
             }
         }
 
-        Map<String, Integer[]> result = new HashMap<>();
+        Map<String, Integer[]> result = new TreeMap<>();
 
         for(School s : schools){
             Integer[] studentId = s.getStudentAllocations().toArray(new Integer[s.getCurrentAllocation()]);
             result.put(s.getName(), studentId);
         }
 
-        for (Map.Entry<String, Integer[]> entry : result.entrySet()) {
-            String schoolName = entry.getKey();
-            Integer[] grades = entry.getValue();
 
-            System.out.println(schoolName + " = " + Arrays.toString(grades));
+        StringBuilder fileContent = new StringBuilder("[");
+        
+        for (Map.Entry<String, Integer[]> entry : result.entrySet()) {
+            fileContent.append(System.lineSeparator()).append("\t").append("{").append(System.lineSeparator());      
+            String schoolName = entry.getKey();
+            Integer[] studentInts = entry.getValue();
+
+            fileContent.append("\t\"" + schoolName +"\"" + ": " + Arrays.toString(studentInts));
+            fileContent.append(System.lineSeparator()).append("\t").append("}").append(",");
+
         }
+
+        //remove last ,
+        fileContent.deleteCharAt(fileContent.length() - 1);
+        
+        fileContent.append(System.lineSeparator()).append("]");
+
+        writeFile("output.json", fileContent.toString());
     
+        
     }
 
 
