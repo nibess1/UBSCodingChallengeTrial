@@ -67,8 +67,6 @@ public class Main {
 
     public static void main(String[] args) {
 
-        long startTime = System.currentTimeMillis();
-
         if (args.length != 1) {
             System.out.println("Usage: java Main <filename>");
             System.exit(1);
@@ -95,8 +93,6 @@ public class Main {
             schools.add(tempschool);
         }
 
-        long parseTime = System.currentTimeMillis();
-        System.out.println("time to parse = " + (parseTime - startTime));
 
 
         List<Assignment> studentAssignment = new ArrayList<>();
@@ -106,13 +102,9 @@ public class Main {
             }
         }
 
-        long mathTime = System.currentTimeMillis();
-        System.out.println("time to calculate = " + (mathTime - parseTime));
 
         studentAssignment.sort(Comparator.comparing(Assignment::getWeight).reversed().thenComparing(Assignment::getStudentId));
 
-        long sortTime = System.currentTimeMillis();
-        System.out.println("time to sort = " + (sortTime - mathTime));
 
         Set<Integer> addedStudents = new HashSet<>();
         //for(Assignment a: studentAssignment){
@@ -138,10 +130,6 @@ public class Main {
             Integer[] studentId = s.getStudentAllocations().toArray(new Integer[s.getCurrentAllocation()]);
             result.put(s.getName(), studentId);
         }
-        
-        long allocateTime = System.currentTimeMillis();
-
-        System.out.println("time to allocate = " + (allocateTime - sortTime));
 
         StringBuilder fileContent = new StringBuilder("[");
         
